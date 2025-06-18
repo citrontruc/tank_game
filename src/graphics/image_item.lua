@@ -13,4 +13,16 @@ function Image:new(img_dir)
     return object
 end
 
+function Image:getImage()
+    return self.img
+end
+
+function Image:getHeight()
+    return self.img:getHeight()
+end
+
+function Image:getWidth()
+    return self.img:getWidth()
+end
+
 return Image
