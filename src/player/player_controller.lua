@@ -25,52 +25,72 @@ function PlayerController:set_control_type(control_type, joystick)
 end
 
 --update
-function PlayerController:update(dt, x, y, size_x, size_y, joystick)
+function PlayerController:update(dt, x, y, angle, size_x, size_y, joystick)
     local move_function = {
         keyboard = PlayerController.move_with_keyboard,
         controller = PlayerController.move_with_controller
     }
 
     chosen_move_function = move_function[self.control_type]
-    x, y = chosen_move_function(self, dt, x, y, joystick)
+    x, y, angle = chosen_move_function(self, dt, x, y, angle, joystick)
     x, y = self:check_position(x, y, size_x, size_y)
-    return x, y
+    return x, y, angle
 end
 
 --movement functions
 --movement with keyboard
-function PlayerController:move_with_keyboard(dt, x,y, joystick)
+function PlayerController:move_with_keyboard(dt, x, y, angle, joystick)
+    local dx = 0
+    local dy = 0
     if love.keyboard.isDown("down") then
         y = y + self.speed * dt
+        dy = 1
     end
     if love.keyboard.isDown("up") then
         y = y - self.speed * dt
+        dy = -1
     end
     if love.keyboard.isDown("right") then
         x = x + self.speed * dt
+        dx = 1
     end
     if love.keyboard.isDown("left") then
         x = x - self.speed * dt
+        dx = -1
     end
-    return x, y
+
+    if dx ~= 0 or dy ~= 0 then
+        angle = math.atan2(dy, dx)
+    end
+    return x, y, angle
 end
 
 -- movement with controller
-function PlayerController:move_with_controller(dt, x,y, joystick)
-    if not joystick then return x, y end
+function PlayerController:move_with_controller(dt, x, y, angle, joystick)
+    local dx = 0
+    local dy = 0
+    if not joystick then return x, y, angle end
     if joystick:isGamepadDown("dpdown") then
         y = y + self.speed * dt
+        dy = 1
     end
     if joystick:isGamepadDown("dpup")then
         y = y - self.speed * dt
+        dy = -1
     end
     if joystick:isGamepadDown("dpright") then
         x = x + self.speed * dt
+        dx = 1
     end
     if joystick:isGamepadDown("dpleft")then
         x = x - self.speed * dt
+        dx = -1
     end
-    return x, y
+
+    if dx ~= 0 or dy ~= 0 then
+        angle = math.atan2(dy, dx)
+    end
+    return x, y, angle
 end
 
 -- Check that player stays on screen

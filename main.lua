@@ -49,6 +49,7 @@ local player_y = 100
 local player_size_x = 40
 local player_size_y = 40
 local player_speed = 400
+local player_rotation_speed = 20
 local player_initial_angle = 0
 local player_control_type = "keyboard"
 local player_initial_angle = math.rad(90)
@@ -70,7 +71,7 @@ love.window.setMode(1200, 800, flags)
 
 -- Main methods
 function love.load()
-    player = player_factory:create_player(player_x, player_y, player_size_x, player_size_y, player_initial_angle, player_control_type, player_speed, player_initial_angle)
+    player = player_factory:create_player(player_x, player_y, player_size_x, player_size_y, player_initial_angle, player_rotation_speed, player_control_type, player_speed, player_initial_angle)
     enemy_tank = enemy_tank_factory:create_tank(enemy_tank_x, enemy_tank_y, enemy_tank_size_x, enemy_tank_size_y, enemy_tank_speed, enemy_tank_speed_run, enemy_tank_distance_threshold, enemy_tank_rotation_speed, enemy_tank_initial_angle)
     -- Controls to take care of our controller
     local joysticks = love.joystick.getJoysticks()

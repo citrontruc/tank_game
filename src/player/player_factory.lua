@@ -22,8 +22,8 @@ function PlayerFactory:new()
     return player_factory
 end
 
-function PlayerFactory:create_player(initial_x, initial_y, size_x, size_y, initial_angle, control_type, speed, initial_image_angle)
-    local player = Player:new(initial_x, initial_y, size_x, size_y, initial_angle, initial_image_angle)
+function PlayerFactory:create_player(initial_x, initial_y, size_x, size_y, initial_angle, player_rotation_speed, control_type, speed, initial_image_angle)
+    local player = Player:new(initial_x, initial_y, size_x, size_y, initial_angle, player_rotation_speed, initial_image_angle)
     local player_graphics_handler = GraphicsHandler:new(PlayerImage)
     local player_controller = PlayerController:new(control_type, speed)
 
