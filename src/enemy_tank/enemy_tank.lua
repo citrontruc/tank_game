@@ -43,7 +43,7 @@ function EnemyTank:set_state(state_key, state_object)
     self.states[state_key] = state_object
 end
 
-function EnemyTank:set_graphic_handler(graphics_handler)
+function EnemyTank:set_graphics_handler(graphics_handler)
     self.graphics_handler = graphics_handler
 end
 

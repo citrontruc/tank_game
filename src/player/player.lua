@@ -9,21 +9,29 @@ local Player = {}
 Player.__index = Player
 
 
-function Player:new(initial_x, initial_y, size_x, size_y, speed)
-    local control_type = "keyboard"
+function Player:new(initial_x, initial_y, size_x, size_y, initial_angle, initial_image_angle)
     local player = {
         player_object = true,
         x = initial_x,
         y = initial_y,
         size_x = size_x,
         size_y = size_y,
-        player_controller = PlayerController:new(control_type, speed),
-        graphics_handler = PlayerGraphicsHandler:new(size_x, size_y),
-        pushable_x = false,
-        pushable_y = false
+        angle = initial_angle,
+        current_angle = initial_angle,
+        player_controller = {},
+        graphics_handler = {},
+        initial_image_angle = initial_image_angle
     }
     setmetatable(player, Player)
     return player
+end
+
+function Player:set_controller(player_controller)
+    self.player_controller = player_controller
+end
+
+function Player:set_graphics_handler(graphics_handler)
+    self.graphics_handler = graphics_handler
 end
 
 --Updates position using the player controller
@@ -32,16 +40,9 @@ function Player:update(dt, joystick)
     self.graphics_handler:update(self.x, self.y)
 end
 
--- Player can't be moved by collisions.
-function Player:collide_x(x)
-end
-
-function Player:collide_y(y)
-end
-
 -- Uses the graphic handler to draw the player on screen.
 function Player:draw()
-    self.graphics_handler:draw()
+    self.graphics_handler:draw(self.x, self.y, self.angle + self.initial_image_angle, self.size_x, self.size_y)
 end
 
 return Player

@@ -32,7 +32,7 @@ function EnemyTankFactory:create_tank(initial_x, initial_y, size_x, size_y, spee
     local idle_state = IdleState:new(enemy_tank)
     local wait_state = WaitState:new(enemy_tank)
     
-    enemy_tank:set_graphic_handler(enemy_tank_graphics_handler)
+    enemy_tank:set_graphics_handler(enemy_tank_graphics_handler)
     enemy_tank:set_state("chase", chase_state)
     enemy_tank:set_state("idle", idle_state)
     enemy_tank:set_state("wait", wait_state)
