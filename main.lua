@@ -1,47 +1,8 @@
---[[
-
-local centerOfScreen = {}
-local tank           = {}
-tank.direction       = 'down'
-
-function love.load()
-  centerOfScreen.x = love.graphics.getWidth() / 2
-  centerOfScreen.y = love.graphics.getHeight() / 2
-
-  tank.image = love.graphics.newImage('tank_green.png')
-end
-
-function love.update(dt)
-  -- logic
-  -- react to user input
-  if love.keyboard.isDown('left') then
-    tank.direction = 'left'
-  elseif love.keyboard.isDown('right') then
-    tank.direction = 'right'
-  elseif love.keyboard.isDown('up') then
-    tank.direction = 'up'
-  else
-    tank.direction = 'down'
-  end
-end
-
-function love.draw()
-  local size = 76
-  local tank_dict = {
-    down = 0,
-    up = math.rad(180),
-    left = math.rad(90),
-    right = math.rad(2700)
-  }
-  local angle = tank_dict[tank.direction]
-  love.graphics.draw(tank.image, centerOfScreen.x - size / 2, centerOfScreen.y - size / 2, angle, 1, 1, size/2, size/2)
-end
-
---]]
-
 -- Imports of our item
 local PlayerFactory = require("src.player.player_factory")
 local EnemyTankFactory = require("src.enemy_tank.enemy_tank_factory")
+local MissileManager = require("src.missile.missile_manager")
+local missile_manager = MissileManager:new()
 
 -- Variables info
 local player_x = 100
@@ -53,7 +14,7 @@ local player_rotation_speed = 20
 local player_initial_angle = 0
 local player_control_type = "keyboard"
 local player_initial_angle = math.rad(90)
-local player_factory = PlayerFactory:new()
+local player_factory = PlayerFactory:new(missile_manager)
 
 local enemy_tank_x = 500
 local enemy_tank_y = 500
@@ -63,7 +24,7 @@ local enemy_tank_speed = 100
 local enemy_tank_speed_run = 100
 local enemy_tank_distance_threshold = 300^2
 local enemy_tank_rotation_speed = 5
-local enemy_tank_factory = EnemyTankFactory:new()
+local enemy_tank_factory = EnemyTankFactory:new(missile_manager)
 local enemy_tank_initial_angle = math.rad(90)
 
 -- Change sizeof screen

@@ -12,6 +12,7 @@ function Missile:new(position_x, position_y, angle, speed)
         y = position_y,
         angle = angle,
         speed = speed,
+        active = true,
         timer = 0
     }
     setmetatable(missile, self)
@@ -34,8 +35,8 @@ end
 
 -- Uses the graphic handler to draw the player on screen.
 function Missile:draw()
-    self.graphics_handler:draw(x, y, speed, angle)
-    if timer > t_afterimage then self.graphics_handler:draw_afterimage(x, y, speed, angle) end
+    self.graphics_handler:draw(self.x, self.y, self.speed, self.angle)
+    if timer > t_afterimage then self.graphics_handler:draw_afterimage(self.x, self.y, self.speed, self.angle) end
 end
 
 return Missile

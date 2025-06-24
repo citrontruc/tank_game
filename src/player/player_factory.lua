@@ -16,8 +16,10 @@ local PlayerFactory = {}
 PlayerFactory.__index = PlayerFactory
 
 
-function PlayerFactory:new()
-    local player_factory = {}
+function PlayerFactory:new(missile_namager)
+    local player_factory = {
+        missile_manager = missile_namager,
+    }
     setmetatable(player_factory, PlayerFactory)
     return player_factory
 end

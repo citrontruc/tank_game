@@ -19,8 +19,9 @@ local EnemyTankFactory = {}
 EnemyTankFactory.__index = EnemyTankFactory
 
 
-function EnemyTankFactory:new()
+function EnemyTankFactory:new(missile_namager)
     local enemy_tank_factory = {
+        missile_manager = missile_namager,
         graphics_handler = GraphicsHandler:new(EnemyTankImage)
     }
     setmetatable(enemy_tank_factory, EnemyTankFactory)
