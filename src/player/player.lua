@@ -1,10 +1,6 @@
 -- An object to create a player character
 -- This object can be moved by using the keyboard or a controller
 
--- An object to handle how we control the player and an object to handle graphics
-local PlayerController = require("src.player.player_controller")
-local PlayerGraphicsHandler = require("src.graphics.player_graphics_handler")
-
 local Player = {}
 Player.__index = Player
 
