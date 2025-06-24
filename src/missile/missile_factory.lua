@@ -29,7 +29,7 @@ end
 
 function MissileFactory:create_missile(position_x, position_y, angle, speed, missile_type, missile_origin)
     local missile_constructor = accepted_missile_types[missile_type]
-
+    
 end
 
 return MissileFactory

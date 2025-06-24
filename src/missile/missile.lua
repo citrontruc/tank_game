@@ -14,7 +14,7 @@ function Missile:new(position_x, position_y, angle, speed)
         speed = speed,
         timer = 0
     }
-    setmetatable(missile, Missile)
+    setmetatable(missile, self)
     return missile
 end
 
