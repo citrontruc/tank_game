@@ -1,9 +1,8 @@
 -- An object to create a missile sent by a tank
 -- This object will be associated to a tank
 
-local MissileGraphicsHandler = require("src.graphics.missile_graphics_handler")
-
 local Missile = {}
+local t_afterimage = 0.5
 Missile.__index = Missile
 
 
@@ -12,7 +11,8 @@ function Missile:new(position_x, position_y, angle, speed)
         x = position_x,
         y = position_y,
         angle = angle,
-        speed = speed
+        speed = speed,
+        timer = 0
     }
     setmetatable(missile, Missile)
     return missile
@@ -34,7 +34,8 @@ end
 
 -- Uses the graphic handler to draw the player on screen.
 function Missile:draw()
-    self.graphics_handler:draw()
+    self.graphics_handler:draw(x, y, speed, angle)
+    if timer > t_afterimage then self.graphics_handler:draw_afterimage(x, y, speed, angle) end
 end
 
 return Missile
