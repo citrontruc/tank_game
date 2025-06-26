@@ -3,6 +3,7 @@
 
 local PlayerController = {}
 PlayerController.__index = PlayerController
+local movement_threshold = 0.1
 
 --creation
 function PlayerController:new(control_type, speed)
@@ -70,6 +71,7 @@ function PlayerController:move_with_controller(dt, x, y, angle, joystick)
     local dx = 0
     local dy = 0
     if not joystick then return x, y, angle end
+    -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
         y = y + self.speed * dt
         dy = 1
@@ -90,6 +92,21 @@ function PlayerController:move_with_controller(dt, x, y, angle, joystick)
     if dx ~= 0 or dy ~= 0 then
         angle = math.atan2(dy, dx)
     end
+
+    local lx = joystick:getAxis(1)
+    local ly = joystick:getAxis(2)
+    local rx = joystick:getAxis(3)
+    local ry = joystick:getAxis(4)
+    if math.abs(lx) > movement_threshold then
+        x = x + self.speed * dt * lx
+    end
+    if math.abs(ly) > movement_threshold then
+        y = y + self.speed * dt * ly
+    end
+    if math.abs(rx) > movement_threshold or math.abs(ry) >= movement_threshold then
+        angle = math.atan2(ry, rx)
+    end
+
     return x, y, angle
 end
 
