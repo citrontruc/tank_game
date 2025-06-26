@@ -51,7 +51,13 @@ end
 
 --Updates position using the player controller
 function Player:update(dt, joystick)
-    self.x, self.y, self.angle = self.player_controller:update(dt, self.x, self.y, self.angle, self.size_x, self.size_y, joystick)
+    local dx = 0
+    local dy = 0
+    local point_angle = 0
+    dx, dy, point_angle = self.player_controller:update(dt, self.x, self.y, self.angle, self.size_x, self.size_y, joystick)
+    self.x = self.x + dx
+    self.y = self.y + dy
+    self.angle = point_angle
     self:update_angle(dt)
 end
 

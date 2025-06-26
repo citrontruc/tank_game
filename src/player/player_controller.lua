@@ -33,9 +33,9 @@ function PlayerController:update(dt, x, y, angle, size_x, size_y, joystick)
     }
 
     chosen_move_function = move_function[self.control_type]
-    x, y, angle = chosen_move_function(self, dt, x, y, angle, joystick)
-    x, y = self:check_position(x, y, size_x, size_y)
-    return x, y, angle
+    dx, dy, angle = chosen_move_function(self, dt, x, y, angle, joystick)
+    dx, dy = self:check_position(x, y, dx, dy, size_x, size_y)
+    return dx, dy, angle
 end
 
 --movement functions
@@ -43,78 +43,85 @@ end
 function PlayerController:move_with_keyboard(dt, x, y, angle, joystick)
     local dx = 0
     local dy = 0
+    local move_x = 0
+    local move_y = 0
     if love.keyboard.isDown("down") then
-        y = y + self.speed * dt
-        dy = 1
+        dy = self.speed * dt
+        move_y = 1
     end
     if love.keyboard.isDown("up") then
-        y = y - self.speed * dt
-        dy = -1
+        dy = -self.speed * dt
+        move_y = -1
     end
     if love.keyboard.isDown("right") then
-        x = x + self.speed * dt
-        dx = 1
+        dx = self.speed * dt
+        move_x = 1
     end
     if love.keyboard.isDown("left") then
-        x = x - self.speed * dt
-        dx = -1
+        dx = -self.speed * dt
+        move_x = -1
     end
 
-    if dx ~= 0 or dy ~= 0 then
-        angle = math.atan2(dy, dx)
+    if move_x ~= 0 or move_y ~= 0 then
+        angle = math.atan2(move_y, move_x)
     end
-    return x, y, angle
+    return dx, dy, angle
 end
 
 -- movement with controller
 function PlayerController:move_with_controller(dt, x, y, angle, joystick)
     local dx = 0
     local dy = 0
+    local move_x = 0
+    local move_y = 0
     if not joystick then return x, y, angle end
     -- Move with dpad (in which case the angle follows the tank.)
     if joystick:isGamepadDown("dpdown") then
-        y = y + self.speed * dt
-        dy = 1
+        dy = self.speed * dt
+        move_y = 1
     end
     if joystick:isGamepadDown("dpup")then
-        y = y - self.speed * dt
-        dy = -1
+        dy = -self.speed * dt
+        move_y = -1
     end
     if joystick:isGamepadDown("dpright") then
-        x = x + self.speed * dt
-        dx = 1
+        dx = self.speed * dt
+        move_x = 1
     end
     if joystick:isGamepadDown("dpleft")then
-        x = x - self.speed * dt
-        dx = -1
+        dx = -self.speed * dt
+        move_x = -1
     end
 
-    if dx ~= 0 or dy ~= 0 then
-        angle = math.atan2(dy, dx)
+    if move_x ~= 0 or move_y ~= 0 then
+        angle = math.atan2(move_y, move_x)
     end
 
+    -- Move with joystick (in which case the left joystick takes care of movement and theright of angle)
     local lx = joystick:getAxis(1)
     local ly = joystick:getAxis(2)
     local rx = joystick:getAxis(3)
     local ry = joystick:getAxis(4)
     if math.abs(lx) > movement_threshold then
-        x = x + self.speed * dt * lx
+        dx = self.speed * dt * lx
     end
     if math.abs(ly) > movement_threshold then
-        y = y + self.speed * dt * ly
+        dy = self.speed * dt * ly
     end
     if math.abs(rx) > movement_threshold or math.abs(ry) >= movement_threshold then
         angle = math.atan2(ry, rx)
     end
 
-    return x, y, angle
+    return dx, dy, angle
 end
 
 -- Check that player stays on screen
-function PlayerController:check_position(x, y, size_x, size_y)
-    x = math.min(math.max(size_x/2, x), love.graphics.getWidth() - size_x/2)
-    y = math.min(math.max(size_y/2, y), love.graphics.getHeight() - size_y/2)
-    return x, y
+function PlayerController:check_position(x, y, dx, dy, size_x, size_y)
+    new_x = math.min(math.max(size_x/2, x + dx), love.graphics.getWidth() - size_x/2)
+    new_y = math.min(math.max(size_y/2, y + dy), love.graphics.getHeight() - size_y/2)
+    dx = new_x - x
+    dy = new_y - y
+    return dx, dy
 end
 
 return PlayerController
