@@ -42,6 +42,9 @@ end
 function love.update(dt)
     player:update(dt, joystick)
     enemy_tank:update(dt, player.x, player.y)
+    if love.keyboard.isDown("escape") then
+        love.event.quit()
+    end
 end
 
 function love.draw()
